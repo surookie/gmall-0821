@@ -9,6 +9,9 @@ spring:
       transport:
         dashboard: localhost:8080
         port: localhost:8719
+    alibaba:
+      seata:
+        tx-service-group: gmall-tx-group
   sleuth:
     sampler:
       probability: 1
@@ -19,7 +22,7 @@ spring:
     discovery-client-enabled: false
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.65.190:3306/guli_pms
+    url: jdbc:mysql://192.168.65.190:3306/guli_pms?useSSL=false
     username: root
     password: 123456Abc@
   redis:

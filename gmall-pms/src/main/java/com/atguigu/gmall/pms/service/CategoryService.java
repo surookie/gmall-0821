@@ -17,5 +17,6 @@ import java.util.Map;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageResultVo queryPage(PageParamVo paramVo);
+
 }
 
