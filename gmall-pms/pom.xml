@@ -13,6 +13,12 @@
     <description>Demo project for Spring Boot</description>
 
     <dependencies>
+        <!--接口依赖-->
+        <dependency>
+            <groupId>com.atguigu</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+            <artifactId>gmall-pms-interface</artifactId>
+        </dependency>
 
         <!--seata相关依赖-->
         <dependency>

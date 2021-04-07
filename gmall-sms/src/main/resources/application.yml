@@ -20,7 +20,7 @@ spring:
     discovery-client-enabled: false #
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.65.190:3306/guli_sms
+    url: jdbc:mysql://192.168.65.190:3306/guli_sms?useSSL=false
     username: root
     password: 123456Abc@
   redis:

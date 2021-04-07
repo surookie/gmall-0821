@@ -1,7 +1,11 @@
 package com.atguigu.gmall.pms.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.atguigu.gmall.pms.entity.AttrEntity;
+import com.atguigu.gmall.pms.mapper.AttrMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +35,18 @@ import com.atguigu.gmall.common.bean.PageParamVo;
 @RequestMapping("pms/spuattrvalue")
 public class SpuAttrValueController {
 
+
     @Autowired
     private SpuAttrValueService spuAttrValueService;
 
+    @GetMapping("search/{cid}")
+    public ResponseVo<List<SpuAttrValueEntity>> querySearchSpuAttrValueByCidAndSpuId(
+            @PathVariable("cid")Long cid,
+            @RequestParam("spuId")Long spuId
+    ){
+        List<SpuAttrValueEntity> spuAttrValueEntities = this.spuAttrValueService.querySearchSpuAttrValueByCidAndSpuId(cid,spuId);
+        return ResponseVo.ok(spuAttrValueEntities);
+    }
     /**
      * 列表
      */

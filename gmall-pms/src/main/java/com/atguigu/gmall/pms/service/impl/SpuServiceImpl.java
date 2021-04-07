@@ -8,6 +8,7 @@ import com.atguigu.gmall.pms.vo.SkuVo;
 import com.atguigu.gmall.pms.vo.SpuAttrValueVo;
 import com.atguigu.gmall.pms.vo.SpuVo;
 import com.atguigu.gmall.sms.vo.SkuSaleVo;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
         return new PageResultVo(page);
     }
 
+    @GlobalTransactional
     @Override
     public void bigSave(SpuVo spuVo) {
         QueryWrapper<SpuVo> wrapper = new QueryWrapper<>();
@@ -174,6 +176,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
             BeanUtils.copyProperties(sku,saleVo);
             saleVo.setSkuId(skuId);
             this.smsClient.saveSales(saleVo);
+            int i = 10 / 0;
         });
 
 

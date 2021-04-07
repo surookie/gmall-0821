@@ -16,6 +16,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.atguigu</groupId>
+            <version>0.0.1-SNAPSHOT</version>
+            <artifactId>gmall-wms-interface</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>

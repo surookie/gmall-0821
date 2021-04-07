@@ -53,6 +53,17 @@ public class SkuController {
         return ResponseVo.ok(pageResultVo);
     }
 
+    /**
+     * 分页查询Sku数据，elasticsearch的索引库
+     */
+    @PostMapping("json")
+    @ApiOperation("分页查询")
+    public ResponseVo<List<SkuEntity>> querySkuByPageJson(@RequestBody PageParamVo paramVo){
+        PageResultVo pageResultVo = skuService.queryPage(paramVo);
+
+        return ResponseVo.ok((List<SkuEntity>)pageResultVo.getList());
+    }
+
 
     /**
      * 信息
