@@ -33,7 +33,7 @@ public class Goods {
 
     //过滤所需的字段
     @Field(type = FieldType.Boolean)
-    private Boolean store;
+    private Boolean store = false;
 
     //品牌聚合所需字段
     @Field(type = FieldType.Integer)
@@ -42,11 +42,13 @@ public class Goods {
     private String brandName;
     @Field(type = FieldType.Keyword)
     private String logo;
+
     //分类聚合所需字段
     @Field(type = FieldType.Long)
     private Long categoryId;
     @Field(type = FieldType.Keyword)
     private String categoryName;
+
     //规格参数聚合所需字段
     @Field(type = FieldType.Nested)
     private List<SearchAttrValue> searchAttrs;

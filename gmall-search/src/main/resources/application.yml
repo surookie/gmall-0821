@@ -20,6 +20,25 @@ spring:
   elasticsearch:
     rest:
       uris: http://localhost:9200
+  jackson:
+    default-property-inclusion: non_null
+    #缓存：开发环境建议关闭，实时观察修改，生产环境开启，提升性能
+  thymeleaf:
+    cache: false
+  rabbitmq:
+    host: 192.168.65.190
+    port: 5672
+    username: admin
+    password: 123456
+    virtual-host: rookie
+    listener:
+      simple:
+        # 手动确认
+        acknowledge-mode: manual
+        # 能者多劳
+        prefetch: 1
+        # 多线程
+        concurrency: 3
 feign:
   sentinel:
     enabled: true

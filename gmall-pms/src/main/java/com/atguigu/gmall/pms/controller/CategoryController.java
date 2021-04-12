@@ -22,6 +22,8 @@ import com.atguigu.gmall.common.bean.PageResultVo;
 import com.atguigu.gmall.common.bean.ResponseVo;
 import com.atguigu.gmall.common.bean.PageParamVo;
 
+import javax.xml.ws.Response;
+
 /**
  * 商品三级分类
  *
@@ -37,10 +39,16 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("parent/withsubs/{pid}")
+    public ResponseVo<List<CategoryEntity>> queryLv2CategoriesWithSubsByPid(@PathVariable("pid") Long pid) {
+        List<CategoryEntity> categoryEntities = this.categoryService.queryLv2CategoriesWithSubsByPid(pid);
+        return ResponseVo.ok(categoryEntities);
+    }
+
     @GetMapping("parent/{parentId}")
-    public ResponseVo<List<CategoryEntity>> queryCategory(@PathVariable("parentId") Long pid){
+    public ResponseVo<List<CategoryEntity>> queryCategory(@PathVariable("parentId") Long pid) {
         QueryWrapper<CategoryEntity> wrapper = new QueryWrapper<>();
-        if(pid != -1){
+        if (pid != -1) {
             wrapper.eq("parent_id", pid);
         }
 //        List<CategoryEntity> categoryEntities = this.categoryService.list(new QueryWrapper<CategoryEntity>().eq("parent_id", pid));
@@ -53,7 +61,7 @@ public class CategoryController {
      */
     @GetMapping
     @ApiOperation("分页查询")
-    public ResponseVo<PageResultVo> queryCategoryByPage(PageParamVo paramVo){
+    public ResponseVo<PageResultVo> queryCategoryByPage(PageParamVo paramVo) {
         PageResultVo pageResultVo = categoryService.queryPage(paramVo);
 
         return ResponseVo.ok(pageResultVo);
@@ -65,8 +73,8 @@ public class CategoryController {
      */
     @GetMapping("{id}")
     @ApiOperation("详情查询")
-    public ResponseVo<CategoryEntity> queryCategoryById(@PathVariable("id") Long id){
-		CategoryEntity category = categoryService.getById(id);
+    public ResponseVo<CategoryEntity> queryCategoryById(@PathVariable("id") Long id) {
+        CategoryEntity category = categoryService.getById(id);
 
         return ResponseVo.ok(category);
     }
@@ -76,8 +84,8 @@ public class CategoryController {
      */
     @PostMapping
     @ApiOperation("保存")
-    public ResponseVo<Object> save(@RequestBody CategoryEntity category){
-		categoryService.save(category);
+    public ResponseVo<Object> save(@RequestBody CategoryEntity category) {
+        categoryService.save(category);
 
         return ResponseVo.ok();
     }
@@ -87,8 +95,8 @@ public class CategoryController {
      */
     @PostMapping("/update")
     @ApiOperation("修改")
-    public ResponseVo update(@RequestBody CategoryEntity category){
-		categoryService.updateById(category);
+    public ResponseVo update(@RequestBody CategoryEntity category) {
+        categoryService.updateById(category);
 
         return ResponseVo.ok();
     }
@@ -98,8 +106,8 @@ public class CategoryController {
      */
     @PostMapping("/delete")
     @ApiOperation("删除")
-    public ResponseVo delete(@RequestBody List<Long> ids){
-		categoryService.removeByIds(ids);
+    public ResponseVo delete(@RequestBody List<Long> ids) {
+        categoryService.removeByIds(ids);
 
         return ResponseVo.ok();
     }

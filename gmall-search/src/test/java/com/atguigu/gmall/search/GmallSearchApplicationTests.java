@@ -109,7 +109,7 @@ class GmallSearchApplicationTests {
 
                         ResponseVo<List<SkuAttrValueEntity>> skuAttrValueResponseVo = this.gmallPmsApi.querySearchSkuAttrValueByCidAndSkuId(sku.getCategoryId(), sku.getId());
                         List<SkuAttrValueEntity> skuAttrValueEntities = skuAttrValueResponseVo.getData();
-                        if(CollectionUtils.isEmpty(skuAttrValueEntities)){
+                        if(!CollectionUtils.isEmpty(skuAttrValueEntities)){
                             attrValues.addAll(skuAttrValueEntities.stream().map(
                                     skuAttrValueEntity -> {
                                         SearchAttrValue searchAttrValue = new SearchAttrValue();

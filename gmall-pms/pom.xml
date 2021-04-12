@@ -13,6 +13,11 @@
     <description>Demo project for Spring Boot</description>
 
     <dependencies>
+        <!---->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
         <!--接口依赖-->
         <dependency>
             <groupId>com.atguigu</groupId>
