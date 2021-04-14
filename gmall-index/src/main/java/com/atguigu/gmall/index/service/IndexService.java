@@ -19,4 +19,15 @@ public interface IndexService {
     //获取二级分类及三级分类
     List<CategoryEntity> queryLv2CategoriesWithSubsByPid(Long pid);
 
+    void testLock();
+
+    void testSemaphore();
+
+    void stuCountDownLock();
+
+    void testReadLock();
+
+    void testWriterLock();
+
+    void monitorCountDownLock() throws InterruptedException;
 }
