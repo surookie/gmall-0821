@@ -4,8 +4,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -36,6 +38,20 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, CategoryEnt
     public List<CategoryEntity> queryLv2CategoriesWithSubsByPid(Long pid) {
         List<CategoryEntity> categoryEntities = this.categoryMapper.queryLv2CategoriesWithSubsByPid(pid);
         return categoryEntities;
+    }
+
+    @Override
+    public List<CategoryEntity> query123CategoriesByCid3(Long cid) {
+        // 根据三级分类Id查询三级分类
+        CategoryEntity categoryEntity3 = this.getById(cid);
+        if (categoryEntity3 == null) {
+            return null;
+        }
+        // 根据二级分类Id查询二级分类
+        CategoryEntity categoryEntity2 = this.getById(categoryEntity3.getParentId());
+        // 根据一级分类Id查询一级分类
+        CategoryEntity categoryEntity1 = this.getById(categoryEntity2.getParentId());
+        return Arrays.asList(categoryEntity1, categoryEntity2, categoryEntity3);
     }
 
 

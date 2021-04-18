@@ -28,6 +28,9 @@
         <module>gmall-gateway</module>
         <module>gmall-search</module>
         <module>gmall-index</module>
+        <module>gmall-item</module>
+        <module>gmall-ums</module>
+        <module>gmall-ums-interface</module>
     </modules>
 
     <properties>

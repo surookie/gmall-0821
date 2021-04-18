@@ -3,9 +3,9 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         druid:
             driver-class-name: com.mysql.jdbc.Driver
-            url: jdbc:mysql://localhost:3306/guli_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+            url: jdbc:mysql://192.168.65.190:3306/guli_fast?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
             username: guli
-            password: 123456
+            password: 123456Abc@
             initial-size: 10
             max-active: 100
             min-idle: 10

@@ -1,0 +1,34 @@
+server:
+  port: 18089
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.106:8848
+    sentinel:
+      transport:
+        dashboard: 192.168.0.106:8080
+        port: 192.168.0.106:8719
+  zipkin:
+    base-url: http://192.168.0.106:9411
+    sender:
+      type: web
+    discovery-client-enabled: true
+  sleuth:
+    sampler:
+      probability: 1
+  redis:
+    host: 192.168.65.190
+  thymeleaf:
+    cache: false
+feign:
+  sentinel:
+    enabled: true
+#jwt配置
+jwt:
+  pubKeyPath: D:\IdeaProjects\project-rookie\rsa\rsa.pub
+  priKeyPath: D:\IdeaProjects\project-rookie\rsa\rsa.pri
+  secret: rookie#kfdssj1freedomer43$214
+  expire: 180
+  cookieName: GMALL-TOKEN
+  unick: unick

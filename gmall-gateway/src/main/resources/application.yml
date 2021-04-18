@@ -4,7 +4,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: 192.168.0.106:8848
     gateway:
       routes:
         - id: pms-route
@@ -35,7 +35,28 @@ spring:
           uri: lb://index-service
           predicates:
             - Host=www.gmall.com, gmall.com
+          #filters:
+          #  - AddResponseHeader=xxx, yyy
+          #  - Auth=/
+          #   - Auth=/xxx, /yyy
         - id: index-route1
           uri: lb://index-service
           predicates:
             - Path=/index/**
+        - id: item-route
+          uri: lb://item-service
+          predicates:
+            - Host=item.gmall.com
+        - id: auth-route
+          uri: lb://auth-service
+          predicates:
+            - Host=sso.gmall.com
+        - id: cart-route
+          uri: lb://cart-service
+          predicates:
+            - Host=cart.gmall.com
+#jwt配置
+jwt:
+  pubKeyPath: D:\IdeaProjects\project-rookie\rsa\rsa.pub
+  cookieName: GMALL-TOKEN
+  secret: rookie#kfdssj1freedomer43$214

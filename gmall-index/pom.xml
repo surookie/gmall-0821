@@ -65,6 +65,12 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!--google：guava：布隆过滤器-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>22.0</version>
+        </dependency>
         <!--redis分布式锁框架：redission-->
         <dependency>
             <groupId>org.redisson</groupId>

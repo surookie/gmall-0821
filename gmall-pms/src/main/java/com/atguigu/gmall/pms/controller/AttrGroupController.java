@@ -2,6 +2,7 @@ package com.atguigu.gmall.pms.controller;
 
 import java.util.List;
 
+import com.atguigu.gmall.pms.vo.ItemGroupVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +36,14 @@ public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
 
+    @GetMapping("category/spuId/skuId/{cid}")
+    public ResponseVo<List<ItemGroupVo>> queryGroupWithAttrValuesBy(
+            @PathVariable("cid") Long cid
+            ,@RequestParam("spuId") Long spuId
+            ,@RequestParam() Long skuId){
+        List<ItemGroupVo> itemGroupVos = this.attrGroupService.queryGroupWithAttrValuesBy(cid, spuId, skuId);
+        return ResponseVo.ok(itemGroupVos);
+    }
     @GetMapping("withattrs/{catId}")
     public ResponseVo<List<AttrGroupEntity>> queryAttrGroupWithAttrsByAndCid(@PathVariable("catId")long cid) {
         //根据说明文档介绍，AttrGroupEntity创建新的属性，创建新的方法返回值 List<AttrGroupEntity>

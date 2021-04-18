@@ -174,6 +174,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
                     return skuImagesEntity;
                 }).collect(Collectors.toList()));
             }
+            // 发送队列消息，使elasticsearch及时更新
             this.rabbitTemplate.convertAndSend("PMS_ITEM_EXCHANGE", "item.insert", spuId);
             //3.保存营销信息相关信息
 

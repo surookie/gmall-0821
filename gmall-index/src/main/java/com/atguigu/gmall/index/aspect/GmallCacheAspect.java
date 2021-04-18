@@ -8,6 +8,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class GmallCacheAspect {
     @Autowired
     private RedissonClient redissonClient;
 
+
     // 环绕通知必须有一个JoinPoint，返回值为Object，
     @Around("@annotation(com.atguigu.gmall.index.config.GmallCache)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -55,6 +57,12 @@ public class GmallCacheAspect {
         // 拼接前缀和参数，作为缓存的key
         String key = prefix + args;
 
+        // 使用布隆过滤器过滤掉不存在的key
+        RBloomFilter<Object> bloomFilter = redissonClient.getBloomFilter("index:bloom");
+        if (!bloomFilter.contains(key)) {
+            return null;
+        }
+
         // 先查询缓存，如果命中，直接返回
         String json = this.redisTemplate.opsForValue().get(key);
         if(StringUtils.isNotBlank(json)){
@@ -64,24 +72,28 @@ public class GmallCacheAspect {
         String lock = gmallCache.lock();
         RLock fairLock = redissonClient.getFairLock(lock + args);
         fairLock.lock();
-        // 再查询缓存，如果可以命中，直接返回
-        String json1 = this.redisTemplate.opsForValue().get(key);
-        if(StringUtils.isNotBlank(json1)){
-            return JSON.parseObject(json1, returnType);
-        }
-        // 执行目标方法，远程调用或者从数据库中获取数据
-        Object result = joinPoint.proceed(joinPoint.getArgs());
-        //把数据放入缓存
-        // 获取缓存时间，为了防止缓存雪崩
-        if(result != null){
-            int timeout = gmallCache.timeout() + new Random().nextInt(gmallCache.random());
-            this.redisTemplate.opsForValue().set(key,JSON.toJSONString(result), timeout, TimeUnit.MINUTES);
-        } else {
-            // 防止缓存穿透，结果为null也缓存，缓存时间为3min
-            this.redisTemplate.opsForValue().set(key,JSON.toJSONString(result), 5, TimeUnit.MINUTES);
-        }
+        try {
+            // 再查询缓存，如果可以命中，直接返回
+            String json1 = this.redisTemplate.opsForValue().get(key);
+            if(StringUtils.isNotBlank(json1)){
+                return JSON.parseObject(json1, returnType);
+            }
+            // 执行目标方法，远程调用或者从数据库中获取数据
+            Object result = joinPoint.proceed(joinPoint.getArgs());
+            //把数据放入缓存
+            // 获取缓存时间，为了防止缓存雪崩
+            if(result != null){
+                int timeout = gmallCache.timeout() + new Random().nextInt(gmallCache.random());
+                this.redisTemplate.opsForValue().set(key,JSON.toJSONString(result), timeout, TimeUnit.MINUTES);
+            } else {
+                // 防止缓存穿透，结果为null也缓存，缓存时间为3min
+                this.redisTemplate.opsForValue().set(key,JSON.toJSONString(result), 5, TimeUnit.MINUTES);
+            }
 
-        return result;
+            return result;
+        } finally {
+            fairLock.unlock();
+        }
     }
 
     /*@Before("execution(* com.atguigu.gmall.index.service.*.*(..))")

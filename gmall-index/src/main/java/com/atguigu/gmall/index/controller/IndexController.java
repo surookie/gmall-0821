@@ -29,6 +29,8 @@ public class IndexController {
 
     @GetMapping
     public String toIndex(Model model, HttpServletRequest request){
+        /*String userId = request.getHeader("userId");
+        System.out.println("----------------userId = " + userId);*/
         // 获取以及一级分类
         List<CategoryEntity> categories = this.indexService.queryLv1Categories();
         model.addAttribute("categories", categories);

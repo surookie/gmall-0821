@@ -3,7 +3,7 @@ package com.atguigu.gmall.index.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall.common.bean.ResponseVo;
 import com.atguigu.gmall.index.config.GmallCache;
-import com.atguigu.gmall.index.feign.GmallPmsApi;
+import com.atguigu.gmall.index.feign.GmallPmsClient;
 import com.atguigu.gmall.index.service.IndexService;
 import com.atguigu.gmall.index.utils.DistributedLock;
 import com.atguigu.gmall.pms.entity.CategoryEntity;
@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -26,9 +25,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class IndexServiceImpl implements IndexService {
 
-
     @Autowired
-    private GmallPmsApi gmallPmsApi;
+    private GmallPmsClient gmallPmsClient;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -44,7 +42,7 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public List<CategoryEntity> queryLv1Categories() {
-        return this.gmallPmsApi.queryCategory(0l).getData();
+        return this.gmallPmsClient.queryCategory(0l).getData();
     }
 
     /**
@@ -56,7 +54,7 @@ public class IndexServiceImpl implements IndexService {
     @GmallCache(prefix = KEY_PREFIX, timeout = 43200, random = 7200, lock = KEY_PREFIX +"lock:")
     @Override
     public List<CategoryEntity> queryLv2CategoriesWithSubsByPid(Long pid) {
-        ResponseVo<List<CategoryEntity>> responseVo = this.gmallPmsApi.queryLv2CategoriesWithSubsByPid(pid);
+        ResponseVo<List<CategoryEntity>> responseVo = this.gmallPmsClient.queryLv2CategoriesWithSubsByPid(pid);
         return responseVo.getData();
     }
 
@@ -78,7 +76,7 @@ public class IndexServiceImpl implements IndexService {
         }
 
         // 防止缓存穿透，数据即使为空也缓存进去
-        List<CategoryEntity> categoryEntityList = this.gmallPmsApi.queryLv2CategoriesWithSubsByPid(pid).getData();
+        List<CategoryEntity> categoryEntityList = this.gmallPmsClient.queryLv2CategoriesWithSubsByPid(pid).getData();
         if (CollectionUtils.isEmpty(categoryEntityList)) {
             redisTemplate.opsForValue().set(KEY_PREFIX + pid, JSON.toJSONString(categoryEntityList), 5, TimeUnit.MINUTES);
         } else {

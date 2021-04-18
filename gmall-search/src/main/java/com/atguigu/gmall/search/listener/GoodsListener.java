@@ -60,6 +60,7 @@ public class GoodsListener {
         ResponseVo<SpuEntity> spuEntityResponseVo = this.gmallPmsApi.querySpuById(spuId);
         SpuEntity spuEntity = spuEntityResponseVo.getData();
 
+        // 如果查询不到，就把手动把消息消费掉
         if(spuEntity == null) {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             return;
