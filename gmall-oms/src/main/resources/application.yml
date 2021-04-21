@@ -1,0 +1,48 @@
+server:
+  port: 18085
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.106:8848
+    sentinel:
+      transport:
+        dashboard: 192.168.0.106:8080
+        port: 8719
+    alibaba:
+      seata:
+        tx-service-group: gmall-tx-group
+  sleuth:
+    sampler:
+      probability: 1
+  zipkin:
+    base-url: http://192.168.0.106:9411
+    sender:
+      type: web
+    discovery-client-enabled: false #
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.65.190:3306/guli_oms?useSSL=false
+    username: root
+    password: 123456Abc@
+  redis:
+    host: 192.168.65.190
+  rabbitmq:
+    host: 192.168.65.190
+    virtual-host: rookie
+    username: admin
+    password: 123456
+    listener:
+      simple:
+        prefetch: 1
+        concurrency: 3
+        acknowledge-mode: manual
+mybatis-plus:
+  mapper-locations: classpath:mapper/oms/**/*.xml
+  type-aliases-package: com.atguigu.gmall.oms.entity
+  global-config:
+    db-config:
+      id-type: auto
+feign:
+  sentinel:
+    enabled: true

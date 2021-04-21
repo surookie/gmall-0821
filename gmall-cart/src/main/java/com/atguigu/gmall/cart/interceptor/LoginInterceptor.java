@@ -1,17 +1,15 @@
 package com.atguigu.gmall.cart.interceptor;
 
 import com.atguigu.gmall.cart.config.JwtProperties;
-import com.atguigu.gmall.cart.entity.UserInfo;
+import com.atguigu.gmall.common.bean.UserInfo;
 import com.atguigu.gmall.common.utils.CookieUtils;
 import com.atguigu.gmall.common.utils.JwtUtils;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -43,7 +41,7 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("拦截器的前置方法。。。。。。。");
+        System.out.println("拦截器的前置方法。。。。。。。判断用户是否登录，获取userInfo,没有就生成随机userKey");
 
         UserInfo userInfo = new UserInfo();
         // 获取userKey
@@ -55,6 +53,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         userInfo.setUserKey(userKey);
 
+        // cookie，判断用户（信息放在cookie中）是否登录，
         String token = CookieUtils.getCookieValue(request, properties.getCookieName());
         if(StringUtils.isNotBlank(token)) {
             Map<String, Object> map = JwtUtils.getInfoFromToken(token, properties.getPublicKey());

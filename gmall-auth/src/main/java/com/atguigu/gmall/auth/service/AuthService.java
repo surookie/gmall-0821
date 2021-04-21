@@ -10,5 +10,5 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2021/4/17 10:10
  */
 public interface AuthService {
-    void login(String loginName, String password, HttpServletRequest request, HttpServletResponse response);
+    void login(String loginName, String password, HttpServletRequest request, HttpServletResponse response) throws Exception;
 }

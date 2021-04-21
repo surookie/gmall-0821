@@ -1,4 +1,4 @@
-package com.atguigu.gmall.cart.entity;
+package com.atguigu.gmall.common.bean;
 
 import lombok.Data;
 

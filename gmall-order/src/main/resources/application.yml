@@ -1,0 +1,45 @@
+server:
+  port: 18092
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.106:8848
+    sentinel:
+      transport:
+        dashboard: 192.168.0.106:8080
+        port: 192.168.0.106:8719
+  zipkin:
+    base-url: http://192.168.0.106:9411
+    sender:
+      type: web
+    discovery-client-enabled: true
+  sleuth:
+    sampler:
+      probability: 1
+  redis:
+    host: 192.168.65.190
+  thymeleaf:
+    cache: false
+  rabbitmq:
+    host: 192.168.65.190
+    virtual-host: rookie
+    username: admin
+    password: 123456
+    publisher-confirm-type: correlated #异步确认
+    publisher-returns: true # 是否到队列
+feign:
+  sentinel:
+    enabled: true
+#jwt配置
+jwt:
+  pubKeyPath: D:\IdeaProjects\project-rookie\rsa\rsa.pub
+  cookieName: GMALL-TOKEN
+  expire: 8640000
+#线程池参数配置
+thread:
+  pool:
+    coreSize: 100
+    maxSize: 400
+    keepAliveTime: 60
+    blockQueueSize: 1000

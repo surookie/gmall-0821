@@ -49,7 +49,7 @@
 						<div class="cart-list" v-for="cart,index in carts" :key="index">
 							<ul class="goods-list yui3-g">
 								<li class="yui3-u-1-24">
-									<input type="checkbox" name="chk_list" v-model="cart.check" value="true" @click="check(cart)" />
+									<input type="checkbox" name="chk_list" v-model="cart.check" value="false" @click="check(cart)" />
 								</li>
 								<li class="yui3-u-6-24">
 									<div class="good-item">
@@ -293,10 +293,10 @@
 			},
 			computed: {
 				totalCount(){
-					return this.carts.reduce((a, b) => parseInt(a) + parseInt(b.count), 0)
+					return this.carts.filter(cart => {return cart.check = true}).reduce((a, b) => parseInt(a) + parseInt(b.count), 0)
 				},
 				totalMoney(){
-					return this.carts.reduce((a, b) => a + b.count * b.price, 0)
+					return this.carts.filter(cart => {return cart.check = true}).reduce((a, b) => a + b.count * b.price, 0)
 				}
 			},
 			methods: {

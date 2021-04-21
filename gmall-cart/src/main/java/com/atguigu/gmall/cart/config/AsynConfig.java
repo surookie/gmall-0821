@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import java.util.concurrent.Executor;
 
 /**
- * @Description TODO
+ * @Description 异步异常处理类配置
  * @Author rookie
  * @Date 2021/4/18 16:20
  */

@@ -35,8 +35,8 @@ public class AuthServiceImpl implements AuthService {
     private JwtProperties properties;
 
     @Override
-    public void login(String loginName, String password, HttpServletRequest request, HttpServletResponse response) {
-        try {
+    public void login(String loginName, String password, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
             // 1.校验用户名和密码
             ResponseVo<UserEntity> userEntityResponseVo = gmallUmsClient.queryUser(loginName, password);
             UserEntity userEntity = userEntityResponseVo.getData();
@@ -60,8 +60,6 @@ public class AuthServiceImpl implements AuthService {
 
             // 6.为了方便展示用户信息
             CookieUtils.setCookie(request, response, this.properties.getUnick(), userEntity.getNickname(), this.properties.getExpire() *60);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }

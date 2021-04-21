@@ -21,7 +21,7 @@ public class ThreadPoolConfig {
             @Value("${thread.pool.coreSize}") Integer coreSize,
             @Value("${thread.pool.maxSize}") Integer maxSize,
             @Value("${thread.pool.keepAliveTime}") Integer keepAliveTime,
-            @Value("${thread.pool.blockQueueSize}") Integer blockQueueSize){
-        return new ThreadPoolExecutor(coreSize,maxSize,keepAliveTime, TimeUnit.SECONDS,new ArrayBlockingQueue<>(blockQueueSize));
+            @Value("${thread.pool.blockQueueSize}") Integer blockQueueSize) {
+        return new ThreadPoolExecutor(coreSize, maxSize, keepAliveTime, TimeUnit.SECONDS, new ArrayBlockingQueue<>(blockQueueSize));
     }
 }
