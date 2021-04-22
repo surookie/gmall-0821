@@ -120,15 +120,16 @@ public class OrderServiceImpl implements OrderService {
         if (!CollectionUtils.isEmpty(skuLockVos)) {
             throw new OrderException(JSON.toJSONString(skuLockVos));
         }
+
         // 4.下单
         Long userId = LoginInterceptor.getUserInfo().getUserId();
         try {
-            int i = 10 / 0;
             this.omsClient.saveOrder(submitVo, userId);
+            // 定时关单
             this.rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "order.close", orderToken);
         } catch (Exception e) {
             e.printStackTrace();
-            // TODO 发生异常，立刻解锁库存
+            // 发生异常，立刻解锁库存，同时若订单生成，需要更改为无效订单
             this.rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "order.disable", orderToken);
             throw new OrderException("创建订单出错，请联系后台人员解决！");
         }

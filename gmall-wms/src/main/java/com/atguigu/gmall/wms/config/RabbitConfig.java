@@ -48,19 +48,19 @@ public class RabbitConfig {
      * 配置参数：
      * *  x-message-ttl： 100000（毫秒）
      * *  x-dead-letter-exchange :ORDER_EXCHANGE
-     * *  x-dead-routing-key: stock.dead
+     * *  x-dead-routing-key: order.disable
      */
     @Bean
     public Queue ttlQueue() {
         return QueueBuilder.durable("STOCK_TTL_QUEUE")
-                .withArgument("x-message-ttl", 90000)
+                .withArgument("x-message-ttl", 100000)
                 .withArgument("x-dead-letter-exchange", "ORDER_EXCHANGE")
-                .withArgument("x-dead-routing-key", "order.disable")
+                .withArgument("x-dead-letter-routing-key", "order.disable")
                 .build();
     }
 
     /**
-     * 定义延时队列绑定到业务交换机 order.close
+     * 定义延时队列绑定到业务交换机 stock.ttl
      */
     @Bean
     public Binding ttlBinging() {

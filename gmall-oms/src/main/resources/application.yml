@@ -37,6 +37,8 @@ spring:
         prefetch: 1
         concurrency: 3
         acknowledge-mode: manual
+    publisher-confirm-type: correlated
+    publisher-returns: true
 mybatis-plus:
   mapper-locations: classpath:mapper/oms/**/*.xml
   type-aliases-package: com.atguigu.gmall.oms.entity

@@ -46,7 +46,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
     @Transactional
     @Override
     public List<SkuLockVo> checkAndLock(List<SkuLockVo> lockVos, String orderToken) {
-        if(CollectionUtils.isEmpty(lockVos)) {
+        if (CollectionUtils.isEmpty(lockVos)) {
             throw new OrderException("您没有要购买的商品。");
         }
 
@@ -54,7 +54,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         lockVos.forEach(lockVo -> checkLock(lockVo));
 
         // 只要有一个商品锁定失败，就要把锁定成功商品解锁
-        if(lockVos.stream().anyMatch(lockVo -> !lockVo.getLock())){
+        if (lockVos.stream().anyMatch(lockVo -> !lockVo.getLock())) {
             lockVos.stream().filter(SkuLockVo::getLock).forEach(lockVo -> {
                 this.wareSkuMapper.unlock(lockVo.getSkuId(), lockVo.getCount());
             });
@@ -67,10 +67,13 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         // 以唯一标识前缀+orderToken为key，lockVos的json字符串为value
         redisTemplate.opsForValue().set(KEY_PREFIX + orderToken, JSON.toJSONString(lockVos));
 
+        // 锁定成功后，定时解锁库存
+        rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "stock.ttl", orderToken);
+
         return null;
     }
 
-    private  void checkLock(SkuLockVo lockVo) {
+    private void checkLock(SkuLockVo lockVo) {
         RLock fairLock = this.redissonClient.getFairLock(LOCK_PREFIX + lockVo.getSkuId());
         fairLock.lock();
         try {
@@ -78,7 +81,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
             // 验库存, 获取满足条件的仓库
             List<WareSkuEntity> wareSkuEntities = wareSkuMapper.check(lockVo.getSkuId(), count);
             // 没有一个满足要求，这里就验库存失败
-            if(CollectionUtils.isEmpty(wareSkuEntities)){
+            if (CollectionUtils.isEmpty(wareSkuEntities)) {
                 lockVo.setLock(false);
                 return;
             }
@@ -88,7 +91,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
 
             // 锁库存: 更新
             Long wareSkuId = wareSkuEntity.getId();
-            if(this.wareSkuMapper.lock(wareSkuId, count) == 1){
+            if (this.wareSkuMapper.lock(wareSkuId, count) == 1) {
                 lockVo.setLock(true);
                 lockVo.setWareSkuId(wareSkuId);
             }

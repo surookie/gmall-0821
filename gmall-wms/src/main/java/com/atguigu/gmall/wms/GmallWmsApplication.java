@@ -8,7 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableSwagger2
+//@EnableSwagger2
 @MapperScan("com.atguigu.gmall.wms.mapper")
 public class GmallWmsApplication {
 

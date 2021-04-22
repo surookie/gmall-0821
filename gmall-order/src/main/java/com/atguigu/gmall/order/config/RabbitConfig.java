@@ -54,7 +54,7 @@ public class RabbitConfig {
         return QueueBuilder.durable("ORDER_TTL_QUEUE")
                 .withArgument("x-message-ttl", 90000)
                 .withArgument("x-dead-letter-exchange", "ORDER_EXCHANGE")
-                .withArgument("x-dead-routing-key", "order.dead")
+                .withArgument("x-dead-letter-routing-key", "order.dead")
                 .build();
     }
 

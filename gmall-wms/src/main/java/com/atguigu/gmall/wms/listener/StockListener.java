@@ -55,8 +55,7 @@ public class StockListener {
             // 解锁库存
             List<SkuLockVo> skuLockVos = JSON.parseArray(skuLockJson, SkuLockVo.class);
             skuLockVos.forEach(lockVo -> {
-                Integer unlock = this.wareSkuMapper.unlock(lockVo.getSkuId(), lockVo.getCount());
-                System.out.println(unlock);
+                this.wareSkuMapper.unlock(lockVo.getWareSkuId(), lockVo.getCount());
             });
 
             // 解锁库存之后，立刻删除锁定的库存信息，防止重复解锁
