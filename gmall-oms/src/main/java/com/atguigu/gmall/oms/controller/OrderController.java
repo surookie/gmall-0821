@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.atguigu.gmall.oms.vo.OrderItemVo;
 import com.atguigu.gmall.oms.vo.OrderSubmitVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,12 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @GetMapping("orderToken/{orderToken}")
+    public ResponseVo<OrderEntity> queryOrderByToken(@PathVariable("orderToken") String orderToken) {
+        OrderEntity orderEntity = this.orderService.getOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderToken));
+        return ResponseVo.ok(orderEntity);
+    }
 
 
     @PostMapping("save/{userId}")

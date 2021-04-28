@@ -30,7 +30,7 @@ public @interface GmallCache {
 
     /**
      * 防止缓存雪崩，
-     * 给缓存指定随机值范围
+     * 给缓存存活时间指定随机值范围
      */
     int random() default 5;
 

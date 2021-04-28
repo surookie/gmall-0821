@@ -34,6 +34,7 @@ public class BloomFilter {
         bloomFilter.tryInit(1500l,0.03);
         List<CategoryEntity> categoryEntities = gmallPmsClient.queryCategory(0l).getData();
         if(!CollectionUtils.isEmpty(categoryEntities)) {
+            // 将所有一级分类的id提前放入布隆过滤器中
             categoryEntities.stream().forEach(categoryEntity -> bloomFilter.add(KEY_PREFIX + "[" + categoryEntity.getId() + "]"));
         }
         return bloomFilter;
