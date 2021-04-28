@@ -67,6 +67,10 @@ spring:
             - Host=payment.gmall.com
           filters:
             - Auth=/
+        - id: payment-route
+          uri: lb://payment-service
+          predicates:
+            - Path=/pay/**  # 支付宝回调消息接收
 #jwt配置
 jwt:
   pubKeyPath: D:\IdeaProjects\project-rookie\rsa\rsa.pub

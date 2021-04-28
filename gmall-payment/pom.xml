@@ -14,6 +14,12 @@
     <description>谷粒商城支付模块</description>
     <dependencies>
 
+        <!--阿里支付api-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>4.11.0.ALL</version>
+        </dependency>
         <dependency>
             <groupId>com.atguigu</groupId>
             <artifactId>gmall-oms-interface</artifactId>
@@ -75,8 +81,8 @@
         </dependency>
 
         <dependency>
-            <groupId></groupId>
-            <artifactId></artifactId>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
         </dependency>
 
         <dependency>
